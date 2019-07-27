@@ -1,11 +1,13 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template,flash
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:building@localhost:3306/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
 
 class Blog(db.Model):
 
@@ -17,22 +19,20 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
+posts = []
 
-@app.route('/')
-def index():
-    return redirect('/blog')
-
-
-@app.route('/blog')
+@app.route('/blog', methods=['POST', 'GET'])
 def blog():
-    blog_id = request.args.get('id')
+    post_id = request.args.get('id')
+    title = "Build a Blog"
 
-    if blog_id == None:
-        posts = Blog.query.all()
-        return render_template('blog.html', posts=posts, title='Build-a-blog')
+    if post_id:
+        blog = Blog.query.filter_by(id = post_id).all()
+        # title = blog.title
+        return render_template('blog.html', title = title, blog = blog, post_id = post_id)
     else:
-        post = Blog.query.get(blog_id)
-        return render_template('entry.html', post=post, title='Blog Entry')
+        blog = Blog.query.order_by(Blog.id.desc()).all()
+        return render_template('index.html', title = title, blog = blog)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
