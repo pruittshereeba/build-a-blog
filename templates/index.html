@@ -1,5 +1,5 @@
 {% extends 'blog.html' %}
-<h1>Build a Blog</h1>
+
 {% block content %}
 <h1>Build a Blog</h1>
 <div class="blogs">
@@ -8,7 +8,7 @@
 
 {% else %}
     {% for post in blog %}
-        <h2><a href="/?id={{post.id}}">{{post.title}}</a></h2>
+        <h2><a href="./blog?id={{post.id}}">{{post.title}}</a></h2>
         <p>{{post.content}}</p>
     {% endfor %}
 {% endif %}
