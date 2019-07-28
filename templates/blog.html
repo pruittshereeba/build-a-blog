@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{title}}</title>
-</head>
-<body>
-<div id="navigation">
-        <a href="/blog">  Main Page  </a>
-        <a href="/newpost">  Write a Post  </a>
-</div>
-<div>
-    {% with messages = get_flashed_messages(with_categories = True) %}
-        <ul>
-        {% for category, message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-        </ul>
-    {% endwith %}
-</div>
-<div>
-    {% block content %}
-    {% endblock %}
-</div>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+
+    {% if blogs|length == 0 %}
+    <p>No blogs yet! Add one please?!</p>
+    {% else %}
+
+    {% for blog in blogs %}
+        <h2><a href='/page?id={{blog.id}}'>{{blog.title}}</h2></a>
+        <p>{{blog.body}}</p>
+    </form>
+
+    <hr />
+
+    {% endfor %}
+
+    {% endif %}
+{% endblock %}
